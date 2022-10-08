@@ -5,8 +5,14 @@ import EnterCode from "./pages/entercode/EnterCode";
 import EnterMail from "./pages/entermail/EnterMail";
 import Login from "./pages/login/Login"
 import DashBoard from "./pages/dashboard/DashBoard";
+import FormLogin from "./components/Form/formLogin/formLogin";
 
 function App() {
+  const token = localStorage.getItem('token');
+
+  if(!token) {
+    return <FormLogin />
+  }
   return (
     <BrowserRouter>
       <Routes>

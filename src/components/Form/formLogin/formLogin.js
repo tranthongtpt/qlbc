@@ -1,74 +1,117 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faEnvelope,faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons'; 
+import {FaEnvelope,FaEye,FaEyeSlash} from 'react-icons/fa'
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import React,{ useState } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const FormLogin = () => {
     // thong bao login failed
-    const MySwal = withReactContent(Swal)
-    const HandleCickButton= (e)=>{
-        MySwal.fire({
-            title: 'Đăng nhập không thành công',
-            icon: 'error',
-            showConfirmButton: false,
-            timer: 2000,
-          })
-          e.preventDefault();
-    }
+    // const MySwal = withReactContent(Swal)
+    // const HandleCickButton= (e)=>{
+    //     MySwal.fire({
+    //         title: 'Đăng nhập không thành công',
+    //         icon: 'error',
+    //         showConfirmButton: false,
+    //         timer: 2000,
+    //       })
+    //       e.preventDefault();
+    // }
     //-----------
-       const handleSubmit = (e) => {
-            e.preventDefault();
-            console.log(e.target.email.value);
 
-            if (!e.target.email.value) {
-                alert("Email is required");
-              } else if (!e.target.email.value) {
-                alert("Valid email is required");
-              } else if (!e.target.password.value) {
-                alert("Password is required");
-              } else if (
-                e.target.email.value === "me@example.com" &&
-                e.target.password.value === "123456"
-              ) {
-                alert("Successfully logged in");
-                e.target.email.value = "";
-                e.target.password.value = "";
-              } else {
-                HandleCickButton()
-              }
-        }
+    const loginUser=(credentials) =>{
+        return fetch('http://localhost:3000/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+          })
+            .then(data => data.json())
+         }
+    
+
     //----------- 
     // xu ly hide & show
-    const [passwordType, setPasswordType] = useState("password");
-    const [passwordInput, setPasswordInput] = useState("");
-    const handlePasswordChange =(e)=>{
-        setPasswordInput(e.target.value);
+    
+        // const [passwordType, setPasswordType] = useState("");
+        // const [passwordInput, setPasswordInput] = useState("");
+        // const handlePasswordChange =(e)=>{
+        //     setPasswordInput(e.target.value);
+        // }
+        // const togglePassword =()=>{
+        //     if(passwordType==="password")
+        //     {
+        //      setPassword("text")
+        //      return;
+        //     }
+        //     setPasswordType("password")
+        // }
+            const [username, setUserName] = useState();
+            const [password, setPassword] = useState();
+            const handleSubmit = async e => {
+                e.preventDefault();
+                const response = await loginUser({
+                    username,
+                    password
+                });
+            if ('token' in response) {
+              Swal("Success", response.message, "success", {
+                buttons: false,
+                timer: 2000,
+              })
+              .then((value) => {
+                localStorage.setItem('token', response['token']);
+                localStorage.setItem('user', JSON.stringify(response['user']));
+                window.location.href = "/dashboard";
+              });
+            } else {
+              Swal("Failed", response.message, "error");
+            }
     }
-    const togglePassword =()=>{
-        if(passwordType==="password")
-        {
-         setPasswordType("text")
-         return;
-        }
-        setPasswordType("password")
-      }
+    
     return(
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={{handleSubmit}}>
             <div className="form-group">
-                <input className="input__field" type="text" placeholder=" " pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" name='email'/>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              name="email"
+              label="Email Address"
+              onChange={e => setUserName(e.target.value)}
+            />
                 <span className="input__label">Email</span>
                 <span>
-                    <FontAwesomeIcon icon={faEnvelope} id="emaill" className='pe'/>
+                    <FaEnvelope id="emaill" className='pe'/>
                 </span>  
             </div>
             <div className="form-group">
-                <input className="input__field"  placeholder=" "id="pwd" type={passwordType} onChange={handlePasswordChange} value={passwordInput} name='password'/>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              name="password"
+              label="Password"
+              type="password"
+              onChange={e => setPassword(e.target.value)} 
+            />
                 <span className="input__label" >Mật khẩu</span>
-                <span onClick={togglePassword}>
-                    {passwordType === 'password' ? <FontAwesomeIcon icon={faEye} aria-hidden="true" type="button" id="eye"/> : <FontAwesomeIcon icon={faEyeSlash} aria-hidden="true" type="button" id="eye"/>}
-                </span>
+                {/* <span onClick={togglePassword}>
+                    {passwordType === 'password' ? <FaEye aria-hidden="true" type="button" id="eye"/> : <FaEyeSlash aria-hidden="true" type="button" id="eye"/>}
+                </span> */}
             </div>
             <div className="form-group t7-space">
                 <div className="checkbox">
@@ -79,9 +122,16 @@ const FormLogin = () => {
                 </div>	
             </div>
             <div className="form-group tc t5-space">
-                <button type="submit" value="Đăng nhập" className="log-in" >Đăng nhập</button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              Sign In
+            </Button>
             </div> 
         </form>
-    );
-};
+    )
+}
 export default FormLogin;

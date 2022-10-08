@@ -1,9 +1,12 @@
 import "./dashboard.css"
-import 'boxicons'
+import  {CgMenuLeft} from 'react-icons/cg'
+import  {BiBell,BiLogIn} from 'react-icons/bi'
 import SideBar from "../../components/SideBar/SideBar";
 import { useState } from "react";
 import { AnimatePresence, motion ,calcLength} from "framer-motion"; 
 import PageWrapper from "../../components/PageWrapper/PageWrapper"
+
+
 function DashBoard() {
     const [isOpen, setIsOpen] = useState(true);
 
@@ -33,17 +36,17 @@ function DashBoard() {
             >
                 <div className="navbar">
                     {/* onClick={toggle} click*/}
-                        <box-icon name='menu' ></box-icon>
+                        <CgMenuLeft/>
                         <div className="navbar-nav">
                             <div className="nav-item">
                                 <a className="nav-link" href="#">
-                                    <box-icon name='bell' animation='tada-hover'></box-icon>
+                                    <BiBell/>
                                     <span className="badge"><p>12</p></span>
                                 </a>
                             </div>
                             <div className="nav-item">
                                 <a className="nav-link">
-                                    <box-icon name='log-out'></box-icon>
+                                    <BiLogIn/>
                                 </a>
                             </div>
                         </div>
