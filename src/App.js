@@ -5,22 +5,39 @@ import EnterCode from "./pages/entercode/EnterCode";
 import EnterMail from "./pages/entermail/EnterMail";
 import Login from "./pages/login/Login"
 import DashBoard from "./pages/dashboard/DashBoard";
-import FormLogin from "./components/Form/formLogin/formLogin";
+import React,{ useEffect,useState } from "react";
+import accountApi from "./api/accountApi";
 
 function App() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
-  if(!token) {
-    return <FormLogin />
+  const User=() =>{
+    if(!token) {
+      return <Login />
+    }
   }
+
+  // const [login, setlogin] = useState([]);
+  // useEffect(() => {
+  //   const fetchlogin = async () => {
+  //     try {
+  //       const response = await accountApi.getAll();
+  //       console.log('Fetch products successfully: ', response);
+  //       setlogin(response.data);
+  //     } catch (error) {
+  //       console.log('Failed to fetch product list: ', error);
+  //     }
+  //   }
+  //   fetchlogin();
+  // }, []);
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/entermail" element={<EnterMail/>}/>
+        {/* <Route path="/entermail" element={<EnterMail/>}/>
         <Route path="/entercode" element={<EnterCode/>}/>
-        <Route path="/forgotpassword" element={<ForgotPassword/>}/>
-        <Route path="/dashboard" element={<DashBoard/>}/>
+        <Route path="/forgotpassword" element={<ForgotPassword/>}/>*/
+        <Route path="/dashboard" element={<DashBoard/>}/> }
       </Routes>
     </BrowserRouter>
   );
