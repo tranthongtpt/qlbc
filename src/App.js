@@ -1,4 +1,4 @@
-import { BrowserRouter,Routes,Route } from "react-router-dom";
+import { BrowserRouter,Switch,Redirect,Routes,Route,} from "react-router-dom";
 
 import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
 import EnterCode from "./pages/entercode/EnterCode";
@@ -6,40 +6,36 @@ import EnterMail from "./pages/entermail/EnterMail";
 import Login from "./pages/login/Login"
 import DashBoard from "./pages/dashboard/DashBoard";
 import React,{ useEffect,useState } from "react";
-import accountApi from "./api/accountApi";
+import PublicRoutes from "./Utils/PublicRoute";
+import PrivateRouter from "./Utils/PrivateRoute";
+
+function getToken() {
+  const tokenString = localStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken?.token
+}
 
 function App() {
-  const token = localStorage.getItem('accessToken');
+  // const token=getToken();
 
-  const User=() =>{
-    if(!token) {
-      return <Login />
-    }
-  }
+  // if(!token) {
+  //   return <Login/>
+  // }
 
-  // const [login, setlogin] = useState([]);
-  // useEffect(() => {
-  //   const fetchlogin = async () => {
-  //     try {
-  //       const response = await accountApi.getAll();
-  //       console.log('Fetch products successfully: ', response);
-  //       setlogin(response.data);
-  //     } catch (error) {
-  //       console.log('Failed to fetch product list: ', error);
-  //     }
-  //   }
-  //   fetchlogin();
-  // }, []);
   return (
-    <BrowserRouter>
+  <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login/>}/>
+        <Route element={<PublicRoutes/>}>
+          <Route path="/login" element={<Login/>}/>
+        </Route>
+        <Route element={<PrivateRouter/>}>
+          <Route path="/dashboard" element={<DashBoard/>}/>
+        </Route>
         {/* <Route path="/entermail" element={<EnterMail/>}/>
         <Route path="/entercode" element={<EnterCode/>}/>
-        <Route path="/forgotpassword" element={<ForgotPassword/>}/>*/
-        <Route path="/dashboard" element={<DashBoard/>}/> }
+        <Route path="/forgotpassword" element={<ForgotPassword/>}/> */}
       </Routes>
-    </BrowserRouter>
+  </BrowserRouter>
   );
 }
 // http://10.220.5.65/cvssgit/QLBC_WEB_Client.git

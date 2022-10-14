@@ -6,72 +6,68 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-    // async function loginUser(credentials) {
-    //     return fetch('http://10.220.5.13:8090/api/v1/admin/login', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(credentials)
-    //     })
-    //     .then(data => data.json())
-    // }
-   
-    export default function Signin() {
+import axios from 'axios';
+import { setUserSession } from "../../Utils/Common";
+
+    export default function Login() {
         const [inputs, setInputs] = useState({});
         const MySwal = withReactContent(Swal)
         const navigate = useNavigate();
+        
+        const [error, setError] = useState(null);
+        const [loading, setLoading] = useState(false);
 
-        const handleChange = (event) => {
-            const name = event.target.name;
-            const value = event.target.value;
+        const handleChange = (e) => {
+            const name = e.target.name;
+            const value = e.target.value;
             setInputs(values => ({...values, [name]: value}))
         }
 
-        const handleSubmit = async (e) => {
+        const handleSubmit = (e) => {
             e.preventDefault();
+        
+            const data = JSON.stringify({
+            "usersName": inputs.usersName,
+            "password": inputs.password
+            });
 
-            var myHeaders = new Headers();
-                myHeaders.append("Content-Type", "application/json");
-                myHeaders.append("Cookie", "connect.sid=s%3AqI78HSBB0xRpi-ZhkjMg7KHRhzstVlHn.O9%2BHYPN1NetFY18FF%2BGDkkYTyVKJwOq9cF6AeeI6LjY");
+            const config = {
+            method: 'post',
+            url: 'http://10.220.5.65:8090/api/v1/admin/login',
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            data : data
+            };
 
-                var raw = JSON.stringify({
-                "email": inputs.email,
-                "password": inputs.password
-                });
-
-                var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-                };
-
-                fetch("http://10.220.5.13:8090/api/v1/user/login", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    console.log(result)
-                    if(result.success === true) {
+            axios(config)
+            .then(response => {
+                if(response.data.success === true || 'accessToken' in response) {
+                    MySwal.fire({
+                        title: <strong>Chúc mừng</strong>,
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                      }).then((value) =>{
+                        localStorage.setItem('token', JSON.stringify(response.data.result.token));
+                        navigate('/dashboard');
+                      })
+                    } else{
                         MySwal.fire({
-                            title: <strong>Chúc mừng</strong>,
-                            icon: 'success',
-                            title: 'Your work has been saved',
+                            title: <strong>Đăng nhập thất bại</strong>,
+                            icon: 'error',
+                            title: 'Đăng nhập thất bại',
                             showConfirmButton: false,
                             timer: 1500
-                          }).then((value) =>{
-                            navigate('/dashboard');
                           })
-                        } else{
-                            MySwal.fire({
-                                title: <strong>Đăng nhập thất bại</strong>,
-                                icon: 'error',
-                                title: 'Đăng nhập thất bại',
-                                showConfirmButton: false,
-                                timer: 1500
-                              })
-                        }
-                })
-                .catch(error => console.log('error', error));
+                    }
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
         }
         return (
             <section>
@@ -92,9 +88,9 @@ import withReactContent from 'sweetalert2-react-content'
                                 required
                                 fullWidth
                                 id="email"
-                                name="email"
+                                name="usersName"
                                 label="Email Address"
-                                value={inputs.username}
+                                value={inputs.name}
                                 onChange={handleChange}
                                 /> 
                             </div>
@@ -108,13 +104,12 @@ import withReactContent from 'sweetalert2-react-content'
                                 name="password"
                                 label="Password"
                                 type="password"
-                                value={inputs.username}
+                                value={inputs.value}
                                 onChange={handleChange} 
                                 />
                             </div>
-                            <div className="form-group t7-space">
+                            <div className="form-group">
                                 <div className="checkbox">
-                                    <label><input type="checkbox"/>Nhớ mật khẩu</label>
                                     <Link to="/entermail" className="login-forgot">
                                         Quên mật khẩu
                                     </Link>
@@ -136,3 +131,4 @@ import withReactContent from 'sweetalert2-react-content'
             </section>
         )      
     }
+

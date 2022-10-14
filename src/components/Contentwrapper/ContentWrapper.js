@@ -9,11 +9,7 @@ function ContentWrapper() {
             <form action="#">
                <div className="body-card">
                   <div className="card">
-                     <label for="">Họ</label>
-                     <input type="text" className="form-control" name="account" value=""/>
-                  </div>
-                  <div className="card">
-                     <label for="">Tên</label>
+                     <label for="">Họ và tên</label>
                      <input type="text" className="form-control" name="account" value=""/>
                   </div>
                   <div className="card">

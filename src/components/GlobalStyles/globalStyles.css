@@ -58,9 +58,6 @@ section{
 .t5-space{
     top:5rem;
 }
-.t7-space{
-    top: 7rem;
-}
 .t14-space{
     top: 14rem;
 }
@@ -118,7 +115,7 @@ section .container .box-container .form-group{
 }
 section .container .box-container .form-group .checkbox{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 section .container .box-container .form-group input{
     outline: none;

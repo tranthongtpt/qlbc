@@ -5,11 +5,16 @@ import SideBar from "../../components/SideBar/SideBar";
 import { useState } from "react";
 import { AnimatePresence, motion ,calcLength} from "framer-motion"; 
 import PageWrapper from "../../components/PageWrapper/PageWrapper"
-
+import { useNavigate } from "react-router-dom";
 
 function DashBoard() {
     const [isOpen, setIsOpen] = useState(true);
+    const navigate = useNavigate();
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login")
+    }
     const showHeaderAnimation = {
         hidden: {
         width: calcLength("100%" - "78px"),
@@ -45,7 +50,7 @@ function DashBoard() {
                                 </a>
                             </div>
                             <div className="nav-item">
-                                <a className="nav-link">
+                                <a className="nav-link" onClick={handleLogout}>
                                     <BiLogIn/>
                                 </a>
                             </div>
