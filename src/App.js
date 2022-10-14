@@ -16,24 +16,19 @@ function getToken() {
 }
 
 function App() {
-  // const token=getToken();
-
-  // if(!token) {
-  //   return <Login/>
-  // }
 
   return (
   <BrowserRouter>
       <Routes>
         <Route element={<PublicRoutes/>}>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/entermail" element={<EnterMail/>}/>
+          <Route path="/entercode" element={<EnterCode/>}/>
+          <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         </Route>
         <Route element={<PrivateRouter/>}>
           <Route path="/dashboard" element={<DashBoard/>}/>
         </Route>
-        {/* <Route path="/entermail" element={<EnterMail/>}/>
-        <Route path="/entercode" element={<EnterCode/>}/>
-        <Route path="/forgotpassword" element={<ForgotPassword/>}/> */}
       </Routes>
   </BrowserRouter>
   );

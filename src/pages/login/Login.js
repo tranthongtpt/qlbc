@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import React,{ useState } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { TextField, InputAdornment, IconButton } from "@material-ui/core";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import axios from 'axios';
@@ -14,8 +16,9 @@ import { setUserSession } from "../../Utils/Common";
         const MySwal = withReactContent(Swal)
         const navigate = useNavigate();
         
-        const [error, setError] = useState(null);
-        const [loading, setLoading] = useState(false);
+        const [showPassword, setShowPassword] = useState(false);
+        const handleClickShowPassword = () => setShowPassword(!showPassword);
+        const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
         const handleChange = (e) => {
             const name = e.target.name;
@@ -33,7 +36,7 @@ import { setUserSession } from "../../Utils/Common";
 
             const config = {
             method: 'post',
-            url: 'http://10.220.5.65:8090/api/v1/admin/login',
+            url: 'https://fakestoreapi.com/users',
             headers: { 
                 'Content-Type': 'application/json',
             },
@@ -103,9 +106,22 @@ import { setUserSession } from "../../Utils/Common";
                                 id="password"
                                 name="password"
                                 label="Password"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 value={inputs.value}
-                                onChange={handleChange} 
+                                onChange={handleChange}
+                                InputProps={{ // <-- This is where the toggle button is added.
+                                    endAdornment: (
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                        >
+                                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    )
+                                  }}
                                 />
                             </div>
                             <div className="form-group">

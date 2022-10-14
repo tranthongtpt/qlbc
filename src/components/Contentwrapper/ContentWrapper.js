@@ -1,4 +1,6 @@
 import './contentwrapper.css';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 function ContentWrapper() {
     return ( 
@@ -9,6 +11,7 @@ function ContentWrapper() {
             <form action="#">
                <div className="body-card">
                   <div className="card">
+                     <TextField variant="outlined" label="Email" type="Họ và tên" />
                      <label for="">Họ và tên</label>
                      <input type="text" className="form-control" name="account" value=""/>
                   </div>
