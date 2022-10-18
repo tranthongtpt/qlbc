@@ -1,6 +1,47 @@
 import './contentwrapper.css';
+import * as React from 'react';
+import { useState } from 'react';
+import axios from 'axios';
+
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormControl from '@material-ui/core/FormControl'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 
 function ContentWrapper() {
+
+   const [age, setAge] = React.useState('');
+   const [inputs,setInputs] =useState({});
+   
+
+   const handleChange = (e) => {
+      setAge(e.target.value);
+
+      const name = e.target.name;
+      const value = e.target.value;
+      setInputs(values => ({...values, [name]: value}))
+   };
+   
+   const [values, setValues] = useState({
+      username: '',
+      email: '',
+      units: '',
+      role: ''
+   });
+   
+   const handleSubmit = async (e) =>{
+      e.preventDefault();
+      const {id, ...payload} = values;
+
+      // try{
+      //    if(id) {
+      //       await axios.put()
+      //    }
+      // }
+   }
+
     return ( 
         <div className="content-wrapper">
             <div className="card-header">
@@ -9,24 +50,61 @@ function ContentWrapper() {
             <form action="#">
                <div className="body-card">
                   <div className="card">
-                     <label for="">Họ và tên</label>
-                     <input type="text" className="form-control" name="account" value=""/>
+                     <InputLabel htmlFor="my-input">Họ và tên</InputLabel>
+                     <TextField 
+                        id="my-input" 
+                        type="text" 
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name={inputs.givename}   
+                     />
+                     {/* <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
                   </div>
                   <div className="card">
-                     <label for="">Email</label>
-                     <input type="text" className="form-control" name="account" value=""/>
+                     <InputLabel htmlFor="my-input">Email</InputLabel>
+                     <TextField 
+                        id="my-input" 
+                        type="text" 
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name={inputs.email}    
+                     />
                   </div>
                   <div className="card">
-                     <label for="">Đơn vị trực thuộc</label>
-                     <input type="text" className="form-control" name="account" value=""/>
+                     <InputLabel htmlFor="my-input">Đơn vị trực thuộc</InputLabel>
+                     <TextField 
+                        id="my-input" 
+                        type="text" 
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name={inputs.units}    
+                     />
                   </div>
                   <div className="card">
-                     <label className="role">Phân quyền</label>
-                     <select className="form-control" name="account">
-                        <option>Vui lòng chọn</option>
-                        <option>Cơ quan nhà nước</option>
-                        <option>Phóng viên</option>
-                     </select>
+                     <InputLabel htmlFor="my-input">Phân quyền</InputLabel>
+                     <FormControl sx={{ m: 1, minWidth: 400 }}>
+                        <Select
+                           value={age}
+                           onChange={handleChange}
+                           displayEmpty
+                           margin="normal"
+                           name={inputs.role}
+                           className="form-control"
+                        >
+                           <MenuItem value="">
+                              <em>Vui lòng chọn</em>
+                           </MenuItem>
+                           <MenuItem value={10}>Ten</MenuItem>
+                           <MenuItem value={20}>Cơ quan nhà nước</MenuItem>
+                           <MenuItem value={30}>Phóng viên</MenuItem>
+                        </Select>
+                     </FormControl>
                   </div>
                </div>
                <div className="layout-btn">

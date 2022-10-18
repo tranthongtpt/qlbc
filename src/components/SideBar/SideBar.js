@@ -8,6 +8,9 @@ import SidebarMenu from "./SidebarMenu";
 import LogoUser from "../../assets/images/background_user.png"
 import './sidebar.css'
 import '../GlobalStyles/GlobalStyles'
+import { useEffect } from "react";
+import axios from "axios";
+
 const routes = [
   {
     path: "/",
@@ -29,28 +32,6 @@ const routes = [
     name: "Thống kê",
     icon: <BiBarChartSquare />,
   },
-//   {
-//     path: "/file-manager",
-//     name: "File Manager",
-//     icon: <AiTwotoneFileExclamation />,
-//     subRoutes: [
-//       {
-//         path: "/settings/profile",
-//         name: "Profile ",
-//         icon: <FaUser />,
-//       },
-//       {
-//         path: "/settings/2fa",
-//         name: "2FA",
-//         icon: <FaLock />,
-//       },
-//       {
-//         path: "/settings/billing",
-//         name: "Billing",
-//         icon: <FaMoneyBill />,
-//       },
-//     ],
-//   },
     {
     path: "/x",
     name: "xx",
@@ -69,55 +50,17 @@ const routes = [
   
 ];
 
-const SideBar = ({ children }) => {
+const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const toggle = () => setIsOpen(!isOpen);
-  const inputAnimation = {
-    hidden: {
-      width: 0,
-      padding: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
-    show: {
-      width: "180px",
-      padding: "5px 15px",
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
+  const toggle = () => setIsOpen(!isOpen); 
 
-  const showAnimation = {
-    hidden: {
-      marginLeft: 0,
-      opacity: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-    show: {
-      opacity: 1,
-      width: "auto",
-      transition: {
-        duration: 0.5,
-      },
-    },
-  }; 
   return (
     <>
         <motion.div
           animate={{
-            width: isOpen ? "250px" : "78px",
-
-            transition: {
-              duration: 0.5,
-              type: "spring",
-              damping: 10,
-            },
+            width: "250px",
           }}
-          className={`sidebar `}
+          className={`sidebar`}
         >
             <div className="logo_content">
                 <div className="logo">
@@ -130,7 +73,7 @@ const SideBar = ({ children }) => {
                     <div className="user_details">
                         <img src={LogoUser} className="img-circle" alt="User Image" id="logo-user"/>
                         <div className="name_job">
-                            <div className="name">Username</div>
+                            <div className="name">xxx</div>
                             <div className="job">chuc vu</div>
                         </div>
                     </div>
@@ -154,7 +97,6 @@ const SideBar = ({ children }) => {
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
-                        variants={showAnimation}
                         initial="hidden"
                         animate="show" 
                         exit="hidden"

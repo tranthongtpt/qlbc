@@ -13,11 +13,11 @@ export const getToken = () => {
 // remove the token and user from the session storage
 export const removeUserSession = () => {
   localStorage.removeItem('token');
-  localStorage.removeItem('user');
+  // localStorage.removeItem('user');
 }
  
 // set the token and user from the session storage
-export const setUserSession = (token, email) => {
+export const setUserSession = (token) => {
   localStorage.setItem('token', token);
-  localStorage.setItem('email', JSON.stringify(email));
+  // localStorage.setItem('email', JSON.stringify(email));
 }

@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import axios from 'axios';
-import { setUserSession } from "../../Utils/Common";
 
     export default function Login() {
         const [inputs, setInputs] = useState({});
@@ -27,13 +26,13 @@ import { setUserSession } from "../../Utils/Common";
             e.preventDefault();
         
             const data = JSON.stringify({
-            "usersName": inputs.usersName,
+            "email": inputs.email,
             "password": inputs.password
             });
 
             const config = {
             method: 'post',
-            url: 'http://10.220.5.65:8090/api/v1/admin/login',
+            url: 'http://10.220.5.65:8090/api/v1/province/login',
             headers: { 
                 'Content-Type': 'application/json',
             },
@@ -49,8 +48,8 @@ import { setUserSession } from "../../Utils/Common";
                         title: 'Your work has been saved',
                         showConfirmButton: false,
                         timer: 1500
-                      }).then((value) =>{
-                        localStorage.setItem('token', JSON.stringify(response.data.result.token));
+                      }).then(() =>{
+                        localStorage.setItem('token',response.data.result.token);
                         navigate('/dashboard');
                       })
                     } else{
@@ -88,7 +87,7 @@ import { setUserSession } from "../../Utils/Common";
                                 required
                                 fullWidth
                                 id="email"
-                                name="usersName"
+                                name="email"
                                 label="Email Address"
                                 value={inputs.name}
                                 onChange={handleChange}

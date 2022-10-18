@@ -8,32 +8,38 @@ import DashBoard from "./pages/dashboard/DashBoard";
 import React,{ useEffect,useState } from "react";
 import PublicRoutes from "./Utils/PublicRoute";
 import PrivateRouter from "./Utils/PrivateRoute";
-
-function getToken() {
-  const tokenString = localStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token
-}
+import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 
 function App() {
-  // const token=getToken();
-
-  // if(!token) {
-  //   return <Login/>
-  // }
-
+  const [authLoading, setAuthLoading] = useState(true);
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      setUserSession(token);
+      setAuthLoading(false);
+    } else {
+      removeUserSession();
+      setAuthLoading(false);
+    } 
+  }, []);
+ 
+  if (authLoading && getToken()) {
+    return <div className="content">Checking Authentication...</div>
+  }
+ 
   return (
   <BrowserRouter>
       <Routes>
         <Route element={<PublicRoutes/>}>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/entermail" element={<EnterMail/>}/>
+          <Route path="/entercode" element={<EnterCode/>}/>
+          <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         </Route>
         <Route element={<PrivateRouter/>}>
           <Route path="/dashboard" element={<DashBoard/>}/>
         </Route>
-        {/* <Route path="/entermail" element={<EnterMail/>}/>
-        <Route path="/entercode" element={<EnterCode/>}/>
-        <Route path="/forgotpassword" element={<ForgotPassword/>}/> */}
+        
       </Routes>
   </BrowserRouter>
   );

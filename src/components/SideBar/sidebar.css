@@ -11,24 +11,20 @@
   .title {
     font-size: 3rem;
     display: grid;
-    place-items: center;
+    place-items: center;  
   }
   
   /* Sidebar */
   .sidebar {
-    background: rgb(0, 7, 61);
     color: white;
     height: 100vh;
-    /* overflow-y: auto; */
     position: fixed;
     top: 0;
     left: 0;
-    
     width: 240px;
     background: var(--tm-color);
-    
     z-index: 99;
-    transition: all 0.5s ease;
+    transition: none !important;
   }
   
   .top_section {
@@ -76,7 +72,7 @@
     gap: 10px;
     padding: 5px 10px;
     border-right: 4px solid transparent;
-    transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    /* transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045); */
     /*  */
     position: relative;
     /* height: 50px; */
