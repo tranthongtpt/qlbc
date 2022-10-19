@@ -54,6 +54,7 @@ function DashBoard() {
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();
     const [isLoaded,setIsLoaded] = useState(false);
+    const [data,setData] = useState('');
 
     useEffect(() => {
         const token =localStorage.getItem('token');
@@ -69,12 +70,12 @@ function DashBoard() {
 
         axios(config)
         .then(function (response) {
+        setData(response.data.result);
         console.log(JSON.stringify(response.data.result));
         })
         .catch(function (error) {
         console.log(error);
         });
-
         
     },[])
 
@@ -89,7 +90,6 @@ function DashBoard() {
                 className="header"
             >
                 <div className="navbar">
-                    {/* onClick={toggle} click*/}
                         <CgMenuLeft/>
                         <div className="navbar-nav">
                             <div className="nav-item">
@@ -124,8 +124,8 @@ function DashBoard() {
                     <div className="user_details">
                         <img src={LogoUser} className="img-circle" alt="User Image" id="logo-user"/>
                         <div className="name_job">
-                            <div className="name">{result.givenName}</div>
-                            <div className="job">chuc vu</div>
+                            <div className="name">{data.givenName}</div>
+                            <div className="job">Cơ quan nhà nước</div>
                         </div>
                     </div>
                 </div>
